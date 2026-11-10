@@ -8,8 +8,8 @@ files=["f_2022.txt", "f_2023.txt", "f_2024.txt", "f_2025.txt", "f_2026.txt"]
 comm_name_col=0
 report_date=2
 outstanding_contracts=7
-num_long_bets=16
-num_short_bets=17
+num_long_bets=13 # for managed money 
+num_short_bets=14
 
 commodities_mapping={"WTI_crude":'WTI FINANCIAL CRUDE OIL - NEW YORK MERCANTILE EXCHANGE',
                      "gold":'GOLD - COMMODITY EXCHANGE INC.',
@@ -38,6 +38,7 @@ def signal_translation(df):
     df_copy["rolling_mean"]=df_copy["position_score"].rolling(window=52).mean()
     df_copy["rolling_std_dev"]=df_copy["position_score"].rolling(window=52).std()
     df_copy["z_score_that_week"]=(df_copy["position_score"]-df_copy["rolling_mean"])/df_copy["rolling_std_dev"]
+    df_copy["z_score_that_week"] = df_copy["z_score_that_week"].shift(1)
     print(df_copy['z_score_that_week'])
     return df_copy[["date","num_long","num_short","num_open_contracts","position_score","z_score_that_week"]]
 # output functions 
